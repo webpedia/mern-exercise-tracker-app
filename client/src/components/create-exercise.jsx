@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios"
-// import Fetch from 'react-fetch'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function EditExercise(props) {
+function CreateExercise() {
 
     const [createExercises, setExercise] = useState({
         username: "",
@@ -14,24 +13,8 @@ function EditExercise(props) {
         users: []
     });
 
-    useEffect(()=>{
-        axios.get('http://localhost:5000/exercises/'+props.match.params.id)
-        .then(res =>{
-            setExercise((prevExercise)=>({
-                    ...prevExercise,
-                    username:res.data.username,
-                    description:res.data.description,
-                    duration:res.data.duration,
-                    date:new Date(res.data.date)
-                
-               
-            }))
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-
     useEffect(() => {
-        axios.get('http://localhost:5000/users/')
+        axios.get('/api/users/')
             .then(response => {
                 if (response.data.length > 0) {
                     setExercise((prevState) => ({
@@ -65,7 +48,8 @@ function EditExercise(props) {
 
     function onSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:5000/exercises/update/'+props.match.params.id, createExercises)
+        console.log(createExercises);
+        axios.post('/api/exercises/add', createExercises)
             .then(res => console.log(res.data));
 
         setExercise({
@@ -80,13 +64,14 @@ function EditExercise(props) {
 
     return (
         <div>
-            <h3>Edit Exercise log</h3>
+            <h3>Create New Exercise log</h3>
             <form >
                 <div>
                     <label>Username: </label>
                     <select
                        name="username"
                         required
+                        
                         className="form-control"
                         value={createExercises.username}
                         onChange={handleChange}>
@@ -125,11 +110,11 @@ function EditExercise(props) {
                     />
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-primary" onClick={onSubmit} >Edit Exercise Log</button>
+                    <button type="submit" className="btn btn-primary" onClick={onSubmit} >Create Exercise Log</button>
                 </div>
             </form>
         </div>
     );
 }
 
-export default EditExercise;
+export default CreateExercise;

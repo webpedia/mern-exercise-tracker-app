@@ -11,7 +11,7 @@ function CreateUser() {
     function onSubmit(event){
         event.preventDefault();
         console.log(username);
-        axios.post('http://localhost:5000/users/add',{username})
+        axios.post('/api/users/add',{username})
         .then(res=> console.log(res.data));
         setUsername("");
 
